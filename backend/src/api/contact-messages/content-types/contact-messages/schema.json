@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_message",
+  "info": {
+    "singularName": "contact-messages",
+    "pluralName": "contact-message",
+    "displayName": "Contact Messages"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "message": {
+      "type": "text",
+      "required": true
+    },
+    "ip": {
+      "type": "string"
+    },
+    "userAgent": {
+      "type": "string"
+    },
+    "estado": {
+      "type": "enumeration",
+      "default": "new",
+      "enum": [
+        "new",
+        "read",
+        "archived"
+      ]
+    }
+  }
+}

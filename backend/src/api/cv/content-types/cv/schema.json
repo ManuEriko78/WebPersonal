@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "cvs",
+  "info": {
+    "singularName": "cv",
+    "pluralName": "cvs",
+    "displayName": "cv"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "experience": {
+      "type": "richtext"
+    },
+    "education": {
+      "type": "richtext"
+    },
+    "courses_languages": {
+      "type": "richtext"
+    },
+    "skills": {
+      "type": "richtext"
+    }
+  }
+}
