@@ -496,7 +496,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
   attributes: {
     category: Schema.Attribute.Enumeration<
-      ['Inform\u00E1tica, redes, proyectos']
+      ['Inform\u00E1tica', 'Redes', 'Ofim\u00E1tica']
     >;
     content: Schema.Attribute.Blocks;
     cover: Schema.Attribute.Media<'images' | 'files' | 'videos'>;

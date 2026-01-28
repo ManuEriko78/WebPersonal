@@ -23,7 +23,9 @@
     "category": {
       "type": "enumeration",
       "enum": [
-        "Informática, redes, proyectos"
+        "Informática",
+        "Redes",
+        "Ofimática"
       ]
     },
     "excerpt": {
