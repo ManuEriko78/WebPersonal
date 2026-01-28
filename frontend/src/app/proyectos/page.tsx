@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { strapiFetch } from "@/lib/strapi";
 export const metadata = { title: "Proyectos" };
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 type ListV4<T> = { data: Array<{ id: number; attributes: T }> };
 

@@ -30,7 +30,7 @@ export async function strapiFetch<T>({
     headers: {
       "Strapi-Response-Format": "v4",
     },
-    next: { revalidate: 30 },
+    cache: "no-store",
   });
 
   if (!res.ok) throw new Error(`Strapi error ${res.status}: ${await res.text()}`);
