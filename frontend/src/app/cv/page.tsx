@@ -131,68 +131,63 @@ function parseExperience(text: string) {
   };
 
   const items: Item[] = [];
-  let cur: Item | null = null;
+  let cur: Item | undefined;
   let inTareas = false;
 
+  const pushIfValid = (it?: Item) => {
+    if (!it) return;
+    if (it.puesto || it.fecha || it.tareas.length || it.otros.length) items.push(it);
+  };
+
   const startNew = () => {
-    if (cur && (cur.puesto || cur.fecha || cur.tareas.length || cur.otros.length)) {
-      items.push(cur);
-    }
-    cur = { tareas: [], otros: [] };
+    pushIfValid(cur);
+    cur = undefined;
     inTareas = false;
+  };
+
+  const ensureCur = (): Item => {
+    if (!cur) cur = { tareas: [], otros: [] };
+    return cur;
   };
 
   for (const line of lines) {
     const upper = line.toUpperCase();
 
-    // 1) Nuevo bloque SIEMPRE que aparece "PUESTO DE TRABAJO:"
+    // Nuevo bloque
     if (upper.startsWith("PUESTO DE TRABAJO:")) {
       startNew();
-      cur!.puesto = line.split(":").slice(1).join(":").trim();
+      const c = ensureCur();
+      c.puesto = line.split(":").slice(1).join(":").trim();
       continue;
     }
 
-    // Si aún no hemos encontrado el primer puesto, iniciamos al vuelo
-    if (!cur) startNew();
+    const c = ensureCur();
 
-    // 2) Fecha
+    // Fecha
     if (upper.startsWith("FECHA:")) {
-      cur!.fecha = line.split(":").slice(1).join(":").trim();
+      c.fecha = line.split(":").slice(1).join(":").trim();
       inTareas = false;
       continue;
     }
 
-    // 3) Tareas / Tarea
+    // Tareas
     if (upper.startsWith("TAREAS:") || upper.startsWith("TAREA:")) {
       inTareas = true;
       continue;
     }
 
-    // 4) Bullet
+    // Bullet
     if (line.startsWith("-")) {
-      cur!.tareas.push(line.replace(/^-+\s*/, "").trim());
+      c.tareas.push(line.replace(/^-+\s*/, "").trim());
       continue;
     }
 
-    // 5) Texto normal: si estamos en tareas lo tratamos como tarea, si no como "otros"
-    if (inTareas) {
-      cur!.tareas.push(line);
-    } else {
-      // Si es una línea tipo "TAREAS" sin dos puntos, la tratamos como inicio de tareas
-      if (upper === "TAREAS" || upper === "TAREA") {
-        inTareas = true;
-      } else {
-        cur!.otros.push(line);
-      }
-    }
+    // Texto normal
+    if (inTareas) c.tareas.push(line);
+    else c.otros.push(line);
   }
 
-  // último
-  if (cur && (cur.puesto || cur.fecha || cur.tareas.length || cur.otros.length)) {
-    items.push(cur);
-  }
-
-  // Limpieza: si un item no tiene puesto pero tiene fecha/tareas, lo dejamos (por si hay un bloque raro)
+  pushIfValid(cur);
   return items;
 }
 
