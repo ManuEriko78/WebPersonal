@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ArticulosClient from "./Articulosclient";
+import ArticulosClient from "./ArticulosClient";
 
 export const dynamic = "force-dynamic";
 

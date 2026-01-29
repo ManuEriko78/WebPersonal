@@ -27,13 +27,17 @@ export async function strapiFetch<T>({
   for (const [k, v] of Object.entries(query)) u.searchParams.set(k, v);
 
   const res = await fetch(u.toString(), {
-    headers: {
-      "Strapi-Response-Format": "v4",
-    },
-    cache: "no-store",
+  headers: {
+    "Strapi-Response-Format": "v4",
+  },
+  cache: "no-store",
   });
 
-  if (!res.ok) throw new Error(`Strapi error ${res.status}: ${await res.text()}`);
-  return res.json();
+  if (!res.ok) {
+  const body = await res.text().catch(() => "");
+  throw new Error(`Strapi error ${res.status} on ${path}: ${body}`);
+  }
+
+  return (await res.json()) as T;
 }
 
